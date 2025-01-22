@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_6cdp"
+    android:background="@color/backgroundColor">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginVertical="@dimen/_10cdp"
+        app:cardCornerRadius="@dimen/_12cdp"
+        app:strokeColor="@color/TextColor"
+        android:backgroundTint="@color/backgroundColor"
+        app:cardElevation="@dimen/_6cdp">
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/_5cdp"
+            android:paddingStart="@dimen/_8cdp"
+            android:paddingVertical="@dimen/_15cdp"
+            android:textSize="@dimen/_16cdp" />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10cdp"
+            android:background="@drawable/baseline_delete_forever_24"
+            android:backgroundTint="@color/red"
+            android:layout_gravity="right|center"
+            android:padding="@dimen/_17cdp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10cdp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/timerTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:letterSpacing="0.1"
+            android:padding="@dimen/_8cdp"
+            android:text="@string/titleTimePicker"
+            android:textSize="@dimen/_16cdp" />
+
+        <TimePicker
+            android:id="@+id/startTimePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:visibility="visible" />
+
+        <TimePicker
+            android:id="@+id/endTimePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSetSchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10cdp"
+            android:padding="@dimen/_16cdp"
+            android:text="@string/buttonSetStartTimerText"
+            android:visibility="visible"
+            app:cornerRadius="@dimen/_12cdp"
+            app:icon="@drawable/baseline_check_24"
+            app:iconSize="@dimen/_20cdp" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12cdp"
+            android:layout_marginTop="@dimen/_5cdp" />
+    </LinearLayout>
+
+
+</LinearLayout>
