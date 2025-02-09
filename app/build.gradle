@@ -43,12 +43,9 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    implementation (libs.gson)
-
-    //Tutorial Show
-    implementation (libs.material.tap.target.prompt)
+    implementation(libs.gson)
 
     //Cdp=Sdp size for responsive
-    implementation (libs.cdp)
+    implementation(libs.cdp)
 
 }

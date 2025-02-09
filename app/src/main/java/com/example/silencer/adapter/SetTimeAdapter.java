@@ -38,7 +38,10 @@ public class SetTimeAdapter extends RecyclerView.Adapter<SetTimeAdapter.TimerVie
     public void onBindViewHolder(@NonNull TimerViewHolder holder, int position) {
         Timer timer = timerModel.get(position);
 
-        holder.txt.setText("From " + timer.startTimeHour + ":" + timer.startTimeMinute + " To " + timer.EndTimeHour + ":" + timer.EndTimeMinute);
+        holder.txt.setText(String.format("From %02d:%02d To %02d:%02d",
+                timer.startTimeHour, timer.startTimeMinute, timer.EndTimeHour, timer.EndTimeMinute));
+
+//        holder.txt.setText("From " + timer.startTimeHour + ":" + timer.startTimeMinute + " To " + timer.EndTimeHour + ":" + timer.EndTimeMinute);
 
         holder.btnDelete.setOnClickListener(v -> deleteListener.onDelete(position));
     }

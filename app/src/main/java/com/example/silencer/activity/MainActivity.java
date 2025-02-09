@@ -1,7 +1,5 @@
 package com.example.silencer.activity;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -12,9 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +20,6 @@ import com.example.silencer.adapter.SetTimeAdapter;
 import com.example.silencer.classes.SilentModeReceiver;
 import com.example.silencer.databinding.ActivityMainBinding;
 import com.example.silencer.model.Timer;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -65,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         binding.recycler.setAdapter(adapter);
 
         binding.btnSetSchedule.setOnClickListener(v -> {
+            saveSelectedDays();
+
+            if (timerModel.selectedDays.isEmpty()) {
+                Toast.makeText(this, "لطفاً حداقل یک روز را انتخاب کنید.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (isStartTime) {
                 checkAndRequestDndPermission();
 
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 newTimerModel.startTimeMinute = timerModel.startTimeMinute;
                 newTimerModel.EndTimeHour = timerModel.EndTimeHour;
                 newTimerModel.EndTimeMinute = timerModel.EndTimeMinute;
+                newTimerModel.selectedDays = new ArrayList<>(timerModel.selectedDays); // ذخیره روزها
 
                 timerListModel.add(newTimerModel);
                 adapter.notifyItemInserted(timerListModel.size() - 1);
@@ -103,6 +106,18 @@ public class MainActivity extends AppCompatActivity {
                 binding.endTimePicker.setVisibility(View.GONE);
             }
         });
+
+        binding.checkboxMonday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxTuesday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxWednesday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxThursday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxFriday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxSaturday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+        binding.checkboxSunday.setOnCheckedChangeListener((buttonView, isChecked) -> updateSetScheduleButtonState());
+
+        updateSetScheduleButtonState();
+
+
     }
 
 
@@ -115,27 +130,91 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("ScheduleExactAlarm")
+    private boolean saveSelectedDays() {
+        timerModel.selectedDays.clear();
+        if (binding.checkboxMonday.isChecked()) timerModel.selectedDays.add("Monday");
+        if (binding.checkboxTuesday.isChecked()) timerModel.selectedDays.add("Tuesday");
+        if (binding.checkboxWednesday.isChecked()) timerModel.selectedDays.add("Wednesday");
+        if (binding.checkboxThursday.isChecked()) timerModel.selectedDays.add("Thursday");
+        if (binding.checkboxFriday.isChecked()) timerModel.selectedDays.add("Friday");
+        if (binding.checkboxSaturday.isChecked()) timerModel.selectedDays.add("Saturday");
+        if (binding.checkboxSunday.isChecked()) timerModel.selectedDays.add("Sunday");
+
+        return !timerModel.selectedDays.isEmpty();
+    }
+
+
+    private void updateSetScheduleButtonState() {
+        boolean atLeastOneChecked = binding.checkboxMonday.isChecked() ||
+                binding.checkboxTuesday.isChecked() ||
+                binding.checkboxWednesday.isChecked() ||
+                binding.checkboxThursday.isChecked() ||
+                binding.checkboxFriday.isChecked() ||
+                binding.checkboxSaturday.isChecked() ||
+                binding.checkboxSunday.isChecked();
+
+        binding.btnSetSchedule.setEnabled(atLeastOneChecked);
+    }
+
+
+
     private void setAlarm(int hour, int minute, boolean enableSilent, int timerId) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, SilentModeReceiver.class);
-        intent.putExtra("enableSilent", enableSilent);
-        intent.putExtra("timerId", timerId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this,
-                timerId,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-        );
+        if (timerModel.selectedDays == null || timerModel.selectedDays.isEmpty()) {
+            return;
+        }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
+        for (String day : timerModel.selectedDays) {
+            Intent intent = new Intent(this, SilentModeReceiver.class);
+            intent.putExtra("enableSilent", enableSilent);
+            intent.putExtra("timerId", timerId);
+            intent.putExtra("day", day);
 
-        if (alarmManager != null) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            int uniqueId = timerId * 1000 + getDayOfWeek(day);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    uniqueId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.DAY_OF_WEEK, getDayOfWeek(day));
+
+            if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+                calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            }
+
+            if (alarmManager != null) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
+    }
+
+
+    public static int getDayOfWeek(String day) {
+        switch (day.toLowerCase()) {
+            case "sunday":
+                return Calendar.SUNDAY;
+            case "monday":
+                return Calendar.MONDAY;
+            case "tuesday":
+                return Calendar.TUESDAY;
+            case "wednesday":
+                return Calendar.WEDNESDAY;
+            case "thursday":
+                return Calendar.THURSDAY;
+            case "friday":
+                return Calendar.FRIDAY;
+            case "saturday":
+                return Calendar.SATURDAY;
+            default:
+                throw new IllegalArgumentException("Invalid day: " + day);
         }
     }
 
@@ -171,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(timerListModel);
-
         editor.putString(KEY_Timers_LIST, json);
         editor.apply();
     }
@@ -193,4 +271,6 @@ public class MainActivity extends AppCompatActivity {
             return new ArrayList<>();
         }
     }
+
+
 }

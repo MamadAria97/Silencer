@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10cdp"
         android:orientation="vertical">
 
@@ -21,6 +21,7 @@
             android:letterSpacing="0.1"
             android:padding="@dimen/_8cdp"
             android:text="@string/titleTimePicker"
+            android:textColor="@color/TextColor"
             android:textSize="@dimen/_16cdp" />
 
         <TimePicker
@@ -37,15 +38,90 @@
             android:timePickerMode="spinner"
             android:visibility="gone" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_14cdp">
+
+            <CheckBox
+                android:id="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#7986CB"
+                android:text="MO"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TU"
+                android:buttonTint="#7986CB"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#7986CB"
+                android:text="WE"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TH"
+                android:buttonTint="#7986CB"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FR"
+                android:buttonTint="#7986CB"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SA"
+                android:buttonTint="#7986CB"
+                android:textColor="@color/TextColor" />
+
+            <CheckBox
+                android:id="@+id/checkbox_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SU"
+                android:buttonTint="#7986CB"
+                android:textColor="@color/TextColor" />
+        </LinearLayout>
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSetSchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="#FFFFFF"
             android:layout_marginTop="@dimen/_10cdp"
             android:padding="@dimen/_16cdp"
             android:text="@string/buttonSetStartTimerText"
             android:visibility="visible"
+            app:iconTint="#FFFFFF"
+            app:backgroundTint="#7986CB"
             app:cornerRadius="@dimen/_12cdp"
             app:icon="@drawable/baseline_check_24"
             app:iconSize="@dimen/_20cdp" />
@@ -54,7 +130,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_12cdp"
             android:layout_marginTop="@dimen/_5cdp" />
     </LinearLayout>
