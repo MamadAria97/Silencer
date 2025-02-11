@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.silencer'
+    namespace 'ir.mamadariakia.silencer'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.silencer"
+        applicationId "ir.mamadariakia.silencer"
         minSdk 24
         targetSdk 34
         versionCode 1

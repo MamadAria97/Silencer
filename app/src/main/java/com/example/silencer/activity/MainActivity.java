@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.silencer.adapter.SetTimeAdapter;
 import com.example.silencer.classes.SilentModeReceiver;
-import com.example.silencer.databinding.ActivityMainBinding;
+import ir.mamadariakia.silencer.databinding.ActivityMainBinding;
 import com.example.silencer.model.Timer;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             saveSelectedDays();
 
             if (timerModel.selectedDays.isEmpty()) {
-                Toast.makeText(this, "لطفاً حداقل یک روز را انتخاب کنید.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please Select Days", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (isStartTime) {

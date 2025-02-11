@@ -1,4 +1,4 @@
-package com.example.silencer;
+package ir.mamadariakia.silencer;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.silencer", appContext.getPackageName());
+        assertEquals("ir.mamadariakia.silencer", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.silencer;
+package ir.mamadariakia.silencer;
 
 import org.junit.Test;
 

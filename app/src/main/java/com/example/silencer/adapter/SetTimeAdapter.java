@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.silencer.R;
+import ir.mamadariakia.silencer.R;
 import com.example.silencer.model.Timer;
 
 import java.util.List;
